@@ -25,14 +25,13 @@ signal z : State_type;
 
 begin
 
--- Insert your processes here
 process (clk, reset)
 begin
   
-    if ((reset = '1') and (input /= SLASH_CHARACTER)) then --should reset be '0'
+    if ((reset = '1') and (input /= SLASH_CHARACTER)) then
       z<=notComment;
       
-    elsif ((reset = '1') and (input = SLASH_CHARACTER)) then --should reset be '0'
+    elsif ((reset = '1') and (input = SLASH_CHARACTER)) then
       z<=possibleComment;
       
     elsif (rising_edge(clk)) then
