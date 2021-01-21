@@ -53,6 +53,7 @@ BEGIN
   REPORT "***TEST 1, single line comment***"; 
   --tests noComment->possibleComment->willBeSingleLine->isSingleLine->commentWillEnd->noComment
   --sequence "A1// A\n "
+  --output 00001110
 	s_input <= A;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "The output(1) should be '0'" SEVERITY ERROR;
@@ -84,6 +85,7 @@ BEGIN
   REPORT "***TEST 2, multi line comment***";
   --tests noComment->possibleComment->willBeMultiLine->isMultiLine->multiLineMayEnd->commentWillEnd->noComment
   --sequence " 1/*11\n*/A"
+  --output 0000111110
 	s_input <= SPACE;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "The output(1) should be '0'" SEVERITY ERROR;
@@ -121,6 +123,7 @@ BEGIN
   REPORT "***TEST 3, reset***"; --tests the reset bit
   --tests noComment->possibleComment->willBeSingleLine->isSingleLine->reset->possibleComment->willBeMultiLine->isMultiLine->multiLineMayEnd->commentWillEnd->noComment
   --sequence " 1//1<reset>/**A*/1"
+  --output 000010011110
 	s_input <= SPACE;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "The output(1) should be '0'" SEVERITY ERROR;
@@ -164,8 +167,10 @@ BEGIN
 	WAIT FOR 1 * clk_period;
 	
   REPORT "***TEST 4, first character is a possible comment***";--testing if it is immediately a "possibleComment" out of the intitial state
-  --tests possibleComment->willBeSingleLine->isSingleLine->commentWillEnd->noComment
-  --sequence "//*A\nA"
+  --also tests if reset will go to a "noComment"
+  --tests possibleComment->willBeSingleLine->isSingleLine->reset->noComment
+  --sequence "//*A<reset>\nA"
+  --output 001100
 	s_input <= SLASH_CHARACTER;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "The output(1) should be '0'" SEVERITY ERROR;
@@ -178,19 +183,22 @@ BEGIN
 	s_input <= A;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '1') REPORT "The output(4) should be '1'" SEVERITY ERROR;
+	s_reset <= '1';
 	s_input <= NEW_LINE_CHARACTER; 
 	WAIT FOR 1 * clk_period;
-	ASSERT (s_output = '1') REPORT "The output(6) should be '1'" SEVERITY ERROR;
+	ASSERT (s_output = '0') REPORT "The output(5) should be '0'" SEVERITY ERROR;
+	s_reset <= '0';
 	s_input <= A;
 	WAIT FOR 1 * clk_period;
-	ASSERT (s_output = '0') REPORT "The output(7) should be '0'" SEVERITY ERROR;
+	ASSERT (s_output = '0') REPORT "The output(6) should be '0'" SEVERITY ERROR;
 	REPORT "_______________________";
 	
 	WAIT FOR 1 * clk_period;
 	
-  REPORT "***TEST 5, new comment after termination of previous comment***";--testing if after "commentWillEnd" it is a "possibleComment"
-  --tests possibleComment->willBeSingleLine->commentWillEnd->possibleComment->willBeSingleLine->isSingleLine->commentWillEnd->noComment
-  --sequence "//\n//A\n1"
+  REPORT "***TEST 5, possible comment after termination of previous comment***";--testing if after "commentWillEnd" it is a "possibleComment"
+  --tests possibleComment->willBeSingleLine->commentWillEnd->possibleComment->willBeSingleLine->isSingleLine->commentWillEnd->possibleComment->noComment
+  --sequence "//\n//A\n/1"
+  --output 001001100
   s_input <= SLASH_CHARACTER;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "The output(1) should be '0'" SEVERITY ERROR;
@@ -212,9 +220,12 @@ BEGIN
 	s_input <= NEW_LINE_CHARACTER; 
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '1') REPORT "The output(7) should be '1'" SEVERITY ERROR;
-	 s_input <= ONE;
+	s_input <= SLASH_CHARACTER;
 	WAIT FOR 1 * clk_period;
 	ASSERT (s_output = '0') REPORT "The output(8) should be '0'" SEVERITY ERROR;
+  s_input <= ONE;
+	WAIT FOR 1 * clk_period;
+	ASSERT (s_output = '0') REPORT "The output(9) should be '0'" SEVERITY ERROR;
 	REPORT "_______________________";
 	
 	REPORT "***TESTS COMPLETE***";
