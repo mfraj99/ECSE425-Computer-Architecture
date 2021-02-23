@@ -3,7 +3,7 @@ proc AddWaves {} {
     add wave -position end sim:/memory_tb/clk
     add wave -position end sim:/memory_tb/writedata
     add wave -position end sim:/memory_tb/address
-    add wave -position end sim:/memory_tb/memwrites
+    add wave -position end sim:/memory_tb/memwrite
     add wave -position end sim:/memory_tb/memread
     add wave -position end sim:/memory_tb/readdata
     add wave -position end sim:/memory_tb/waitrequest
