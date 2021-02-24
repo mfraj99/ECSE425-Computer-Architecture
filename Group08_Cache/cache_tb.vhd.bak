@@ -119,9 +119,7 @@ begin
   --for i in 0 to 31 loop cache_block(i), if you wanted to loop how would you get the cache structure into the testbench?
   --should we only set the valid bits to 0 on start up or all bits to 0?
   --should the cache file itself set all valid bits to 0? reset?
-  --and then we could just call reset at the start of the test bench to ensure cache is cleared
-  
-  --may need to put something in memory to to then retrieve back to the cache 
+  --and then we could just call reset at the start of the test bench to ensure cache is cleared 
     
 
 -- valid, not dirty, read, tag equal (in cache) same as valid, dirty, read, tag equal
