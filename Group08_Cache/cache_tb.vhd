@@ -116,13 +116,38 @@ end process;
 
 test_process : process
 begin
-  --for i in 0 to 31 loop cache_block(i), if you wanted to loop how would you get the cache structure into the testbench?
-  --should we only set the valid bits to 0 on start up or all bits to 0?
-  --should the cache file itself set all valid bits to 0? reset?
-  --and then we could just call reset at the start of the test bench to ensure cache is cleared
-  
-  --may need to put something in memory to to then retrieve back to the cache 
-    
+
+-- CASE 1: Not Valid, not dirty, write, tag not equal (equivalent to valid, not dirty, write, tag not equal)
+s_addr <= x"00CB0413";
+s_writedata <= X"00000021";
+s_write <= "1";
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000021" report "Not Valid (or valid), not dirty, write, tag not equal" severity error;
+
+wait for clk_period;
+
+-- CASE 2: Valid, dirty, read, tag equal (equivalent to valid, not dirty, read, tag equal)
+
+wait for clk_period;
+
+-- CASE 3: Valid, dirty, read, tag not equal
+
+wait for clk_period;
+
+-- CASE 4: Valid, not dirty, read, tag not equal (equivalent to not valid, not dirty, read, tag not equal)
+
+wait for clk_period;
+
+-- CASE 5: Valid, dirty, write, tag equal (equivalent to valid, not dirty, write, tag equal)
+
+wait for clk_period;
+
+-- CASE 6: Valid, dirty, write, tag not equal
+
+wait for clk_period;
 
 -- valid, not dirty, read, tag equal (in cache) same as valid, dirty, read, tag equal
 
