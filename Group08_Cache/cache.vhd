@@ -49,6 +49,9 @@ begin
     s_waitrequest <= '1'; 
   
     if (reset = '1') or (m_waitrequest = '1') then
+      for i in 0 to 31 loop
+        cache_block(i)(134 downto 0) <= (others => '0'); --set all blocks to 0
+      end loop;
       z<=idle;
       
     elsif (rising_edge(clock)) then
