@@ -117,25 +117,24 @@ end process;
 test_process : process
 begin
 
-
 -- CASE 1: Not Valid, not dirty, write, tag not equal
-s_addr <= 14;
+s_addr <= x"0000000E";
 s_writedata <= X"00000021";
-s_read <= "0";
-s_write <= "1";
+s_read <= '0';
+s_write <= '1';
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
-wait until s_waitrequest = '0';
+-ait until s_waitrequest = '0';
 assert s_readdata = x"00000021" report "Not Valid, not dirty, write, tag not equal" severity error;
 
 wait for clk_period;
 
 -- CASE 2: Not Valid, not dirty, write, tag equal, addr 0 has same tag as freshly initialized cache block
-s_addr <= 0;
+s_addr <= x"00000000";
 s_writedata <= X"00000021";
-s_read <= "0";
-s_write <= "1";
+s_read <= '0';
+s_write <= '1';
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
@@ -145,10 +144,10 @@ assert s_readdata = x"00000021" report "Not Valid, not dirty, write, tag equal" 
 wait for clk_period;
 
 -- CASE 3: Valid, not dirty, write, tag equal, recently wrote to addr 14, valid not dirty
-s_addr <= 14;
+s_addr <= x"0000000E";
 s_writedata <= X"00000001";
-s_read <= "0";
-s_write <= "1";
+s_read <= '0';
+s_write <= '1';
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
@@ -158,10 +157,10 @@ assert s_readdata = x"00000001" report "Valid, not dirty, write, tag equal" seve
 wait for clk_period;
 
 -- CASE 4: Valid, dirty, write, tag equal, recently wrote to addr 14, valid dirty
-s_addr <= 14;
+s_addr <= x"0000000E";
 s_writedata <= X"00000010";
-s_read <= "0";
-s_write <= "1";
+s_read <= '0';
+s_write <= '1';
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
@@ -171,10 +170,10 @@ assert s_readdata = x"00000010" report "Valid, dirty, write, tag equal" severity
 wait for clk_period;
 
 -- CASE 5: Valid, not dirty, write, tag not equal, cache block for 30 same as 14
-s_addr <= 30;
+s_addr <= x"0000001E";
 s_writedata <= X"00000100";
-s_read <= "0";
-s_write <= "1";
+s_read <= '0';
+s_write <= '1';
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
@@ -184,12 +183,12 @@ assert s_readdata = x"000000100" report "Valid, not dirty, write, tag not equal"
 wait for clk_period;
 
 -- CASE 6: Valid, dirty, write, tag not equal, cache block for 14 same as 30
-s_addr <= 30;
+s_addr <= x"0000001E";
 s_writedata <= X"00001000";
-s_read <= "0";
-s_write <= "1";
+s_read <= '0';
+s_write <= '1';
 wait until s_waitrequest = '0';
-s_addr <= 14;
+s_addr <= x"0000001E";
 s_writedata <= X"00000010";
 wait until s_waitrequest = '0';
 s_write <= '0';
@@ -208,28 +207,28 @@ wait for clk_period;
 
 -- CASE 7: Not Valid, not dirty, read, tag not equal, use case 6 variables
 
-s_addr <= 30;
+s_addr <= x"0000001E";
 s_write <= '0';
 s_read <= '1';
 wait until s_waitrequest = '0';
 assert s_readdata = x"00000010" report "Not Valid, not dirty, read, tag not equal" severity error;
 
 -- CASE 8: Not Valid, not dirty, read, tag equal, use case 2 variables
-s_addr <=0;
+s_addr <=x"00000000";
 s_write <= '0';
 s_read <= '1';
 wait until s_waitrequest = '0';
 assert s_readdata = x"00000021" report "Not Valid, not dirty, read, tag equal" severity error;
 
 -- CASE 9: Valid, not dirty, read, tag equal, use case 6 variables
-s_addr <= 30;
+s_addr <= x"0000001E";
 s_write <= '0';
 s_read <= '1';
 wait until s_waitrequest = '0';
 assert s_readdata = x"00000010" report "Not Valid, not dirty, read, tag equal" severity error;
 
 -- CASE 10: Valid, dirty, read, tag equal, use case 9 variables
-s_addr <= 30;
+s_addr <= x"0000001E";
 s_writedata <= X"00001000";
 s_write <= '1';
 s_read <= '0';
@@ -240,19 +239,19 @@ wait until s_waitrequest = '0';
 assert s_readdata = x"00001000" report "Valid, dirty, read, tag equal" severity error;
 
 -- CASE 11: Valid, not dirty, read, tag not equal, same cache block as 14
-s_addr <=14;
+s_addr <=x"0000000E";
 s_write <= '0';
 s_read <= '1';
 wait until s_waitrequest = '0';
 assert s_readdata = x"000010" report "Valid, not dirty, read, tag not equal" severity error;
 
 -- CASE 12: Valid, dirty, read, tag not equal, same cache block as 30
-s_addr <=14;
+s_addr <=x"0000000E";
 s_writedata <= X"00010000";
 s_write <= '1';
 s_read <= '0';
 wait until s_waitrequest = '0';
-s_addr <=30;
+s_addr <=x"0000001E";
 s_write <= '0';
 s_read <= '1';
 wait until s_waitrequest = '0';

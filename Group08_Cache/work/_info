@@ -4,7 +4,7 @@ K3
 cModel Technology
 Z0 dP:\ECSE425\Group08_Cache
 Ecache
-Z1 w1614197097
+Z1 w1614304926
 Z2 DPx4 ieee 11 numeric_std 0 22 O3PF8EB`?j9=z7KT`fn941
 Z3 DPx3 std 6 textio 0 22 5>J:;AW>W0[[dW0I6EN1Q0
 Z4 DPx4 ieee 14 std_logic_1164 0 22 5=aWaoGZSMWIcH0i^f`XF1
@@ -16,7 +16,7 @@ L7
 VH9^7bcTg9NVOIkZ9X^`6O1
 Z8 OV;C;10.1d;51
 32
-Z9 !s108 1614197168.638000
+Z9 !s108 1614306485.388000
 Z10 !s90 -reportprogress|300|cache.vhd|
 Z11 !s107 cache.vhd|
 o-O0
@@ -41,7 +41,7 @@ o-O0
 R12
 !i10b 1
 Ecache_tb
-Z13 w1614197164
+Z13 w1614306478
 R2
 R3
 R4
@@ -49,13 +49,13 @@ R5
 Z14 8cache_tb.vhd
 Z15 Fcache_tb.vhd
 l0
-L5
+L7
 VhaX0iVRQi5d3>5Rb8YYnI3
-!s100 ]fh1bOYc^igY:D8iI@<HI2
+!s100 `ioD_;7M:;o3S86U3[VOK3
 R8
 32
 !i10b 1
-Z16 !s108 1614197169.024000
+Z16 !s108 1614306485.718000
 Z17 !s90 -reportprogress|300|cache_tb.vhd|
 Z18 !s107 cache_tb.vhd|
 o-O0
@@ -64,11 +64,11 @@ Abehavior
 R2
 R3
 R4
-DEx4 work 8 cache_tb 0 22 haX0iVRQi5d3>5Rb8YYnI3
-l71
-L8
-V=PdSUN_XU@1jCod7[8d=[0
-!s100 DE@7iJCQa4@fFTLo]jV;63
+Z19 DEx4 work 8 cache_tb 0 22 haX0iVRQi5d3>5Rb8YYnI3
+l73
+L10
+VOAKeVQGD1]CR713OB_DlS3
+!s100 =nVMJWSRK>_6mP=PZZ4Ed1
 R8
 32
 !i10b 1
@@ -78,21 +78,21 @@ R18
 o-O0
 R12
 Ememory
-Z19 w1612543064
+Z20 w1612543064
 R2
 R3
 R4
 R5
-Z20 8memory.vhd
-Z21 Fmemory.vhd
+Z21 8memory.vhd
+Z22 Fmemory.vhd
 l0
 L6
 V8158ci`AC>8?HV1LdBXOR0
 R8
 32
-Z22 !s108 1614110846.455000
-Z23 !s90 -reportprogress|300|memory.vhd|
-Z24 !s107 memory.vhd|
+Z23 !s108 1614110846.455000
+Z24 !s90 -reportprogress|300|memory.vhd|
+Z25 !s107 memory.vhd|
 o-O0
 R12
 !s100 W0Q2kiG[JW]=VB46Ng>4]1
@@ -107,29 +107,29 @@ L23
 V[fh9WlMTT=WNH07:UMZfo2
 R8
 32
-R22
 R23
 R24
+R25
 o-O0
 R12
 !s100 dMJ40lXn9_T1^0Y]Df4[A3
 !i10b 1
 Ememory_tb
-R19
+R20
 R2
 R3
 R4
 R5
-Z25 8memory_tb.vhd
-Z26 Fmemory_tb.vhd
+Z26 8memory_tb.vhd
+Z27 Fmemory_tb.vhd
 l0
 L5
 VD98NfaIO^@`l<0B>3c?6o0
 R8
 32
-Z27 !s108 1614110846.796000
-Z28 !s90 -reportprogress|300|memory_tb.vhd|
-Z29 !s107 memory_tb.vhd|
+Z28 !s108 1614110846.796000
+Z29 !s90 -reportprogress|300|memory_tb.vhd|
+Z30 !s107 memory_tb.vhd|
 o-O0
 R12
 !s100 oLmG8jlOOJcnj1m7@@hng3
@@ -144,9 +144,9 @@ L8
 V]m=F6kISf8;;gdfolmFLK3
 R8
 32
-R27
 R28
 R29
+R30
 o-O0
 R12
 !s100 MnnN2z3i:?I:TaT349bn:0
