@@ -46,14 +46,17 @@ begin
 process (clock, reset)
 begin
   
+    s_waitrequest <= '1'; 
+  
     if (reset = '1') or (m_waitrequest = '1') then
       z<=idle;
       
     elsif (rising_edge(clock)) then
       
       case z is
-        
-        when idle=> 
+               
+        when idle=>
+
           if m_waitrequest = '1' then
             z<=idle;
           elsif s_read = '1' then
@@ -171,7 +174,8 @@ begin
                 z<= get_from_mem_write;
               end if;
             end if;
-
+            
+            s_waitrequest <= '0';
             z<=idle;
                 
 

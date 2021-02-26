@@ -125,7 +125,7 @@ s_write <= '1';
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
--ait until s_waitrequest = '0';
+wait until s_waitrequest = '0';
 assert s_readdata = x"00000021" report "Not Valid, not dirty, write, tag not equal" severity error;
 
 wait for clk_period;
