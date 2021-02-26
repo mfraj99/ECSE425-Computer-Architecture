@@ -117,49 +117,150 @@ end process;
 test_process : process
 begin
 
--- CASE 1: Not Valid, not dirty, write, tag not equal (equivalent to valid, not dirty, write, tag not equal)
-s_addr <= x"00CB0413";
+
+-- CASE 1: Not Valid, not dirty, write, tag not equal
+s_addr <= 14;
 s_writedata <= X"00000021";
+s_read <= "0";
 s_write <= "1";
 wait until s_waitrequest = '0';
 s_write <= '0';
 s_read <= '1';
 wait until s_waitrequest = '0';
-assert s_readdata = x"00000021" report "Not Valid (or valid), not dirty, write, tag not equal" severity error;
+assert s_readdata = x"00000021" report "Not Valid, not dirty, write, tag not equal" severity error;
 
 wait for clk_period;
 
--- CASE 2: Valid, dirty, read, tag equal (equivalent to valid, not dirty, read, tag equal)
+-- CASE 2: Not Valid, not dirty, write, tag equal, addr 0 has same tag as freshly initialized cache block
+s_addr <= 0;
+s_writedata <= X"00000021";
+s_read <= "0";
+s_write <= "1";
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000021" report "Not Valid, not dirty, write, tag equal" severity error;
 
 wait for clk_period;
 
--- CASE 3: Valid, dirty, read, tag not equal
+-- CASE 3: Valid, not dirty, write, tag equal, recently wrote to addr 14, valid not dirty
+s_addr <= 14;
+s_writedata <= X"00000001";
+s_read <= "0";
+s_write <= "1";
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000001" report "Valid, not dirty, write, tag equal" severity error;
 
 wait for clk_period;
 
--- CASE 4: Valid, not dirty, read, tag not equal (equivalent to not valid, not dirty, read, tag not equal)
+-- CASE 4: Valid, dirty, write, tag equal, recently wrote to addr 14, valid dirty
+s_addr <= 14;
+s_writedata <= X"00000010";
+s_read <= "0";
+s_write <= "1";
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000010" report "Valid, dirty, write, tag equal" severity error;
 
 wait for clk_period;
 
--- CASE 5: Valid, dirty, write, tag equal (equivalent to valid, not dirty, write, tag equal)
+-- CASE 5: Valid, not dirty, write, tag not equal, cache block for 30 same as 14
+s_addr <= 30;
+s_writedata <= X"00000100";
+s_read <= "0";
+s_write <= "1";
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"000000100" report "Valid, not dirty, write, tag not equal" severity error;
 
 wait for clk_period;
 
--- CASE 6: Valid, dirty, write, tag not equal
+-- CASE 6: Valid, dirty, write, tag not equal, cache block for 14 same as 30
+s_addr <= 30;
+s_writedata <= X"00001000";
+s_read <= "0";
+s_write <= "1";
+wait until s_waitrequest = '0';
+s_addr <= 14;
+s_writedata <= X"00000010";
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000010" report "Valid, dirty, write, tag not equal" severity error;
 
 wait for clk_period;
 
--- valid, not dirty, read, tag equal (in cache) same as valid, dirty, read, tag equal
+-- RESET CACHE, in order to test read with not valid
+reset <= '1';
+wait for clk_period;
+reset <= '0';
+wait for clk_period;
 
--- valid, dirty, read, tag not equal (miss)
 
--- valid, not dirty, read, tag not equal same as valid, not dirty, read, tag equal same as any case with not valid and read
+-- CASE 7: Not Valid, not dirty, read, tag not equal, use case 6 variables
 
--- valid, not dirty, write, tag equal same as valid, dirty, write, tag equal
+s_addr <= 30;
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000010" report "Not Valid, not dirty, read, tag not equal" severity error;
 
--- valid, dirty, write, tag not equal
+-- CASE 8: Not Valid, not dirty, read, tag equal, use case 2 variables
+s_addr <=0;
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000021" report "Not Valid, not dirty, read, tag equal" severity error;
 
--- valid, not dirty, write, tag not equal same as any case with not valid and write
+-- CASE 9: Valid, not dirty, read, tag equal, use case 6 variables
+s_addr <= 30;
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00000010" report "Not Valid, not dirty, read, tag equal" severity error;
+
+-- CASE 10: Valid, dirty, read, tag equal, use case 9 variables
+s_addr <= 30;
+s_writedata <= X"00001000";
+s_write <= '1';
+s_read <= '0';
+wait until s_waitrequest = '0';
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"00001000" report "Valid, dirty, read, tag equal" severity error;
+
+-- CASE 11: Valid, not dirty, read, tag not equal, same cache block as 14
+s_addr <=14;
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"000010" report "Valid, not dirty, read, tag not equal" severity error;
+
+-- CASE 12: Valid, dirty, read, tag not equal, same cache block as 30
+s_addr <=14;
+s_writedata <= X"00010000";
+s_write <= '1';
+s_read <= '0';
+wait until s_waitrequest = '0';
+s_addr <=30;
+s_write <= '0';
+s_read <= '1';
+wait until s_waitrequest = '0';
+assert s_readdata = x"001000" report "Valid, dirty, read, tag not equal" severity error;
+
+
+
+
 
 
 	
